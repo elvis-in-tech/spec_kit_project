@@ -1,50 +1,69 @@
-# [PROJECT_NAME] Constitution
-<!-- Example: Spec Constitution, TaskFlow Constitution, etc. -->
+<!--
+Sync Impact Report
+- Version change: scaffold → 1.0.0
+- Modified principles: none; established four initial project principles
+- Added sections: Additional Constraints, Quality Gates
+- Removed sections: unused fifth principle slot from the scaffold
+- Follow-up TODOs: confirm the original ratification date
+-->
+
+# Meia-Entrada Constitution
 
 ## Core Principles
 
-### [PRINCIPLE_1_NAME]
-<!-- Example: I. Library-First -->
-[PRINCIPLE_1_DESCRIPTION]
-<!-- Example: Every feature starts as a standalone library; Libraries must be self-contained, independently testable, documented; Clear purpose required - no organizational-only libraries -->
+### I. Server-Side Business Rule Validation
+Toda regra de negócio MUST ser validada no servidor antes de qualquer operação ser
+aceita, persistida ou disponibilizada ao usuário. A validação no front-end pode
+melhorar a experiência, mas nunca substitui a validação no servidor. O servidor
+MUST retornar uma resposta de erro clara e consistente quando uma regra for
+violada, mantendo a integridade independentemente do cliente utilizado.
 
-### [PRINCIPLE_2_NAME]
-<!-- Example: II. CLI Interface -->
-[PRINCIPLE_2_DESCRIPTION]
-<!-- Example: Every library exposes functionality via CLI; Text in/out protocol: stdin/args → stdout, errors → stderr; Support JSON + human-readable formats -->
+### II. Complete UI State Handling
+Toda tela em produção MUST representar explicitamente os estados de
+carregamento e de erro, além do estado de sucesso ou conteúdo vazio quando
+aplicável. Nenhum fluxo pode depender de uma tela vazia, travada ou silenciosa
+enquanto aguarda uma resposta ou falha. Esses estados MUST ser verificáveis por
+testes apropriados ao fluxo.
 
-### [PRINCIPLE_3_NAME]
-<!-- Example: III. Test-First (NON-NEGOTIABLE) -->
-[PRINCIPLE_3_DESCRIPTION]
-<!-- Example: TDD mandatory: Tests written → User approved → Tests fail → Then implement; Red-Green-Refactor cycle strictly enforced -->
+### III. Automated Coverage for Price and Limit Rules
+Toda regra de preço e de limite MUST ter cobertura por teste automatizado,
+incluindo casos válidos, inválidos e limites relevantes. Alterações nessas
+regras MUST atualizar ou adicionar os testes correspondentes antes de serem
+aceitas. A cobertura automatizada é o mecanismo mínimo para evitar regressões
+em cobrança, elegibilidade, quantidade e disponibilidade comercial.
 
-### [PRINCIPLE_4_NAME]
-<!-- Example: IV. Integration Testing -->
-[PRINCIPLE_4_DESCRIPTION]
-<!-- Example: Focus areas requiring integration tests: New library contract tests, Contract changes, Inter-service communication, Shared schemas -->
+### IV. Database as Availability Source of Truth
+A disponibilidade de ingressos MUST ser determinada pelo banco de dados e por
+suas operações transacionais, nunca pelo estado exibido na tela ou por uma
+suposição mantida no cliente. O servidor MUST consultar e validar a
+disponibilidade no momento da operação de reserva ou compra, tratando
+concorrência e falhas de forma consistente. O estado da interface serve apenas
+para exibição e atualização, não para autorizar a venda.
 
-### [PRINCIPLE_5_NAME]
-<!-- Example: V. Observability, VI. Versioning & Breaking Changes, VII. Simplicity -->
-[PRINCIPLE_5_DESCRIPTION]
-<!-- Example: Text I/O ensures debuggability; Structured logging required; Or: MAJOR.MINOR.BUILD format; Or: Start simple, YAGNI principles -->
+## Additional Constraints
 
-## [SECTION_2_NAME]
-<!-- Example: Additional Constraints, Security Requirements, Performance Standards, etc. -->
+As regras devem permanecer centralizadas em serviços ou módulos do servidor
+que possam ser exercitados por testes automatizados. O cliente deve tratar as
+respostas do servidor como autoridade para preço, limites e disponibilidade.
 
-[SECTION_2_CONTENT]
-<!-- Example: Technology stack requirements, compliance standards, deployment policies, etc. -->
+## Quality Gates
 
-## [SECTION_3_NAME]
-<!-- Example: Development Workflow, Review Process, Quality Gates, etc. -->
-
-[SECTION_3_CONTENT]
-<!-- Example: Code review requirements, testing gates, deployment approval process, etc. -->
+Uma mudança só pode ser integrada quando houver evidência de que as regras
+afetadas foram validadas no servidor, que as telas alteradas possuem estados de
+carregamento e erro, e que as regras de preço e limite relacionadas estão
+cobertas por testes automatizados. Mudanças que afetem concorrência ou estoque
+devem incluir teste de integração ou equivalente que exercite a fonte de
+verdade persistida.
 
 ## Governance
-<!-- Example: Constitution supersedes all other practices; Amendments require documentation, approval, migration plan -->
 
-[GOVERNANCE_RULES]
-<!-- Example: All PRs/reviews must verify compliance; Complexity must be justified; Use [GUIDANCE_FILE] for runtime development guidance -->
+Esta constituição prevalece sobre práticas conflitantes do projeto. Qualquer
+alteração deve atualizar este documento, registrar no Sync Impact Report o
+impacto nos princípios e obter revisão dos responsáveis pelo projeto. A
+versionagem segue SemVer: MAJOR para remoção ou redefinição incompatível de
+princípios, MINOR para novos princípios ou expansão material de escopo, e PATCH
+para esclarecimentos sem mudança semântica. A revisão de conformidade deve
+ocorrer em toda mudança de código que afete regras de negócio, telas,
+pagamentos, limites ou disponibilidade.
 
-**Version**: [CONSTITUTION_VERSION] | **Ratified**: [RATIFICATION_DATE] | **Last Amended**: [LAST_AMENDED_DATE]
-<!-- Example: Version: 2.1.1 | Ratified: 2025-06-13 | Last Amended: 2025-07-16 -->
+**Version**: 1.0.0 | **Ratified**: TODO(RATIFICATION_DATE): confirmar data original de adoção | **Last Amended**: 2026-09-12
